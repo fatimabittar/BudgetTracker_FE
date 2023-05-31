@@ -1,0 +1,16 @@
+{
+  "explorer.compactFolders": false,
+  "prettier.printWidth": 200,
+  "prettier.jsxSingleQuote": true,
+  "prettier.trailingComma": "none",
+  "prettier.arrowParens": "avoid",
+  "prettier.singleQuote": true,
+  "workbench.colorCustomizations": {
+    "titleBar.activeBackground": "#3628A0",
+    "titleBar.activeForeground": "#fff"
+  },
+  "editor.tabSize": 2,
+  "jestrunner.jestCommand": "npm run test --",
+  "editor.codeActionsOnSave": ["source.organizeImports", "source.fixAll"],
+  "eslint.format.enable": true
+}
