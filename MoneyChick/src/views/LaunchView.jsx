@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   },
   gif: {
     width: windowWidth,
-    height: windowHeight+30,
+    height: windowHeight+50,
   },
 })
 

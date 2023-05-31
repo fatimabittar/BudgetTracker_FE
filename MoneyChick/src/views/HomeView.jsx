@@ -25,8 +25,8 @@ export const HomeView = () => {
         <ScrollView>
             <ReportForWalletAmount walletAmount={walletAmount} />
             <ReportForSpentBudget budgetsSpent={budgetsSpent} />
-            {/* <ReportExpensesPerDay expensesPerDay={expensesPerDay} /> */}
-            {/* <ReportExpensePieChart expensesCategories={expensesCategories}/> */}
+            <ReportExpensesPerDay expensesPerDay={expensesPerDay} />
+            <ReportExpensePieChart expensesCategories={expensesCategories}/>
         </ScrollView>
     )
 }

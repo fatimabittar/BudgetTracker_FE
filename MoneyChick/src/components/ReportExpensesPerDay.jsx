@@ -1,55 +1,49 @@
 import React from 'react';
 import { View, StyleSheet, Text } from 'react-native';
-// import { BarChart } from 'react-native-chart-kit';
+import { BarChart, Grid } from 'react-native-svg-charts';
 import { windowWidth } from '../utils/dimensions';
 import { textColor } from '../utils/globalStyle';
 
 export const ReportExpensesPerDay = ({ expensesPerDay = [] }) => {
-
-  const barChartData = {
-    labels: expensesPerDay.map((expense) => expense._id),
-    datasets: [
-      {
-        data: expensesPerDay.map((expense) => expense.totalExpenses),
-      },
-    ],
-  };
+  const barChartData = expensesPerDay.map((expense) => ({
+    value: expense.totalExpenses,
+  }));
+  console.log(expensesPerDay);
 
   return (
     <View style={styles.container}>
-
       <Text style={styles.title}>Expenses for This Week</Text>
+      <View style={styles.rowContainer}>
+        {expensesPerDay.map((expense, index) => (
+          <View key={index} style={styles.itemContainer}>
+            <Text style={styles.budgetQuantityText}>{expense.totalExpenses}</Text>
+          </View>
+        ))}
+      </View>
       <BarChart
-        data={barChartData}
-        width={windowWidth * 0.8}
-        height={220}
-        yLabelsOffset={-5}
-        yAxisSuffix='$'
-        chartConfig={chartConfig}
         style={styles.chartStyle}
-        showBarTops
-        showValuesOnTopOfBars
-        withVerticalLabels
-        
-      />
+        data={barChartData}
+        svg={{ fill: 'rgba(90,161,97,1)' }}
+        yAccessor={({ item }) => item.value} // Access the value property for y-axis
+        contentInset={{ top: 10, bottom: 10 }}
+        spacing={0.2}
+        gridMin={0}
+      >
+        <Grid />
+      </BarChart>
+      <View style={styles.rowContainer}>
+        {expensesPerDay.map((expense, index) => (
+          <View key={index} style={styles.itemContainer}>
+            <Text style={styles.dayText}>{expense._id}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
 
-const chartConfig = {
-  backgroundColor: textColor,
-  backgroundGradientFrom: '#ffffff',
-  backgroundGradientTo: '#ffffff',
-
-  decimalPlaces: 0,
-  color: (opacity = 1) => `rgba(90,161,97, ${opacity})`, // Green color scheme
-};
-
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
-    alignItems: 'flex-start',
-
     backgroundColor: 'white',
     borderRadius: 10,
     padding: 20,
@@ -62,8 +56,10 @@ const styles = StyleSheet.create({
     color: textColor,
   },
   chartStyle: {
+    height: 220,
+    color: textColor,
+    width: windowWidth * 0.8,
     marginTop: 15,
-    left: 0,
   },
   rowContainer: {
     flexDirection: 'row',
@@ -77,5 +73,11 @@ const styles = StyleSheet.create({
     fontSize: 8,
     fontWeight: 'bold',
     transform: [{ rotate: '45deg' }],
+  },
+  budgetQuantityText: {
+    fontSize: 10,
+    fontWeight: 'bold',
+    marginTop:20,
+    color: textColor,
   },
 });

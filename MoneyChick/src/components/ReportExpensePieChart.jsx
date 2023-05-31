@@ -1,60 +1,62 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-// import { PieChart } from 'react-native-svg-charts';
-import { primaryColor, textColor } from '../utils/globalStyle';
-// import { Circle, G, Line, Text as SVGText } from 'react-native-svg';
-
+import { PieChart } from 'react-native-svg-charts';
+import { textColor } from '../utils/globalStyle';
 
 export const ReportExpensePieChart = ({ expensesCategories = [] }) => {
+  const getColor = () => {
+    const usedColors = new Set();
+
+    // Collect used colors
+    expensesCategories.forEach((item) => {
+      usedColors.add(item.categoryColor);
+    });
+
+    const availableColors = [
+      '#FF5733',
+      '#C70039',
+      '#900C3F',
+      '#581845',
+      '#FFC300',
+      '#FF5733',
+      '#C70039',
+      '#900C3F',
+      '#581845',
+      '#FFC300',
+    ];
+
+    // Find the first available color
+    for (let color of availableColors) {
+      if (!usedColors.has(color)) {
+        return color;
+      }
+    }
+
+    // Return a fallback color if all colors are used
+    return '#000000';
+  };
+
   const pieData = expensesCategories.map((item, index) => ({
     value: item.totalExpenses,
     svg: {
-      fill: item.categoryColor,
+      fill: item.categoryColor || getColor(),
     },
     key: item.categoryId,
     label: item.categoryName,
   }));
 
-  const Labels = ({ slices }) => {
-    return slices.map((slice, index) => {
-      const { labelCentroid, pieCentroid, data } = slice;
-      return (
-        <G key={index}>
-          <Line
-            x1={labelCentroid[0]}
-            y1={labelCentroid[1]}
-            x2={pieCentroid[0]}
-            y2={pieCentroid[1]}
-            stroke={textColor}
-          />
-          <Circle
-            cx={labelCentroid[0]}
-            cy={labelCentroid[1]}
-            r={14}
-            fill={data.svg.fill}
-          />
-          <SVGText
-            x={labelCentroid[0]}
-            y={labelCentroid[1]}
-            fill={textColor}
-            textAnchor="middle"
-            alignmentBaseline="middle"
-            fontSize={13}
-            fontWeight="bold"
-          >
-            {data.label}
-          </SVGText>
-        </G>
-      );
-    });
-  };
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Expense Categories</Text>
-      <PieChart style={styles.chart} data={pieData}>
-        <Labels />
-      </PieChart>
+      <PieChart style={styles.chart} data={pieData} />
+      <View style={styles.legendContainer}>
+        {pieData.map((dataPoint) => (
+          <View style={styles.legendItem} key={dataPoint.key}>
+            <View style={[styles.legendColor, { backgroundColor: dataPoint.svg.fill }]} />
+            <Text style={styles.legendLabel}>{dataPoint.label}</Text>
+          </View>
+        ))}
+      </View>
     </View>
   );
 };
@@ -74,5 +76,27 @@ const styles = StyleSheet.create({
   },
   chart: {
     height: 200,
+    marginBottom: 10,
+  },
+  legendContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+  },
+  legendItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 20,
+    marginBottom: 10,
+  },
+  legendColor: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    marginRight: 5,
+  },
+  legendLabel: {
+    fontSize: 12,
+    color: textColor,
   },
 });

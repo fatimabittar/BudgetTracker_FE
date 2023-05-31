@@ -88,12 +88,14 @@ const styles = StyleSheet.create({
     },
     logo: {
         resizeMode: 'center',
+        marginTop:50,
         width: 200,
         height: 200,
         alignSelf: 'center',
     },
     drawerContent: {
         flex: 1,
+
     },
     section: {
         flexDirection: 'row',
@@ -103,7 +105,7 @@ const styles = StyleSheet.create({
 
     },
     drawerSection: {
-        // marginTop: 15,
+        marginTop: -60,
     },
     bottomDrawerSection: {
         marginBottom: 15,

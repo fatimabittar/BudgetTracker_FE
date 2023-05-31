@@ -11,6 +11,7 @@ export const AddCategoryView = ({ navigation, route }) => {
     const [color, setColor] = useState('');
     const { user } = useAuthContext();
     const { addCategory } = route?.params ?? {};
+    console.log(icon)
 
     const onSave = () => {
         const newCategory = {
@@ -31,6 +32,9 @@ export const AddCategoryView = ({ navigation, route }) => {
         setColor(selectedColor);
     };
 
+    const navigateToIconSelection = () => {
+        navigation.navigate('Select Icon', { icon, setIcon });
+    };
 
     return (
         <View style={styles.container}>
@@ -41,12 +45,10 @@ export const AddCategoryView = ({ navigation, route }) => {
                 placeholder="Category Name"
                 style={styles.input}
             />
-            <TextInput
-                value={icon}
-                onChangeText={setIcon}
-                placeholder="Category Icon"
-                style={styles.input}
-            />
+            <TouchableOpacity onPress={navigateToIconSelection} style={styles.iconButton}>
+                <Text style={styles.iconButtonText}>Select Icon</Text>
+            </TouchableOpacity>
+            <Text style={styles.selectedIconText}>{icon}</Text>
             <TextInput
                 value={type}
                 onChangeText={setType}
@@ -84,6 +86,18 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         color: 'gray'
     },
+    iconButton: {
+        backgroundColor: primaryColor,
+        padding: 10,
+        borderRadius: 5,
+        marginBottom: 10,
+    },
+    iconButtonText: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: textColor,
+        textAlign: 'center',
+    },
     saveButton: {
         backgroundColor: primaryColor,
         padding: 10,
@@ -97,5 +111,15 @@ const styles = StyleSheet.create({
     },
     colorPicker: {
         marginTop: 20,
+    },
+    selectedIconText: {
+        height: 40,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        paddingHorizontal: 10,
+        marginBottom: 20,
+        color: 'gray'
     }
 });
+
