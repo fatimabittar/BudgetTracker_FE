@@ -1,37 +1,84 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { primaryColor, textColor } from '../utils/globalStyle.js';
+import { useAuthContext } from '../hooks/useAuthContext.jsx';
+import { Icon } from '../components/Icon.jsx';
+import { FormInput } from '../components/FormInput.jsx';
+import { windowHeight } from '../utils/dimensions.js';
+import { FormDatePicker } from '../components/FormDatePicker.jsx';
+
 
 export const EditTransactionView = ({ navigation, route }) => {
     const { transaction, editTransaction } = route.params;
     const [description, setDescription] = useState(transaction.description);
-    const [amount, setAmount] = useState(transaction.amount);
+    const [amount, setAmount] = useState(transaction.amount.toString());
+    const [category, setCategory] = useState({ name: transaction.categoryName, icon: transaction.icon, color: transaction.color, type: transaction.type });
     const [date, setDate] = useState(new Date(transaction.date));
-    console.log(transaction, amount)
+
+    const onSave = () => {
+        const updatedTransaction = {
+            ...transaction,
+            description,
+            amount: parseFloat(amount),
+            date: date.toDateString()
+        };
+
+        editTransaction(updatedTransaction, () => {
+            console.log('Transaction edited successfully');
+            navigation.goBack();
+        });
+    };
+
+    const onCategorySelect = () => {
+        navigation.navigate('Select Category', { onCategorySelect: setCategory })
+    };
+
+    const handleAmountChange = (value) => {
+        const numericValue = value.replace(/[^0-9.]/g, '');
+        setAmount(numericValue);
+    };
 
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>{transaction.categoryName} Category:</Text>
-            <TextInput
-                value={description}
+            <FormInput
+                labelValue={amount}
+                onChangeText={handleAmountChange}
+                placeholderText="Amount"
+                keyboardType="decimal-pad"
+                familyIcon="Fontisto"
+                iconType="dollar"
+                autoCapitalize="none"
+                autoCorrect={false}
+            />
+            <TouchableOpacity disabled onPress={onCategorySelect} style={styles.categorySelection}>
+                {category ?
+                    <>
+                        <View style={styles.categoryIcon}>
+                            <Icon name={category.icon} color={category.color} />
+                        </View><Text style={styles.categoryName}>{category.name}</Text>
+                    </>
+                    :
+                    <>
+                        <View style={styles.categoryIcon}>
+                            <Icon name='help' color='gray' />
+                        </View>
+                        <Text style={styles.categoryName}>Select Category</Text>
+                    </>
+                }
+            </TouchableOpacity>
+            <FormInput
+                labelValue={description}
                 onChangeText={setDescription}
-                placeholder={transaction.description ? transaction.description : 'Add description'}
-                style={styles.input}
-            />
-            <TextInput
-                value={amount}
-                onChangeText={setAmount}
-                placeholder={` Amount: ${transaction.amount}`}
-                style={styles.input}
-            />
-            <TextInput
-                value={date}
-                onChangeText={setDate}
-                placeholder={` Date: ${transaction.date}`}
-                style={styles.input}
+                placeholderText="Description"
+                familyIcon="Fontisto"
+                iconType="prescription"
+                autoCapitalize="none"
+                autoCorrect={false}
             />
 
-            <TouchableOpacity onPress={() => editTransaction({ ...transaction, description, amount, date }, () => navigation.navigate('Transaction View'))} style={styles.saveButton}>
+            <FormDatePicker date={date} onChange={setDate} />
+
+            <TouchableOpacity onPress={onSave} style={styles.saveButton}>
                 <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
         </View >
@@ -44,28 +91,9 @@ const styles = StyleSheet.create({
         padding: 20,
         backgroundColor: '#fff',
     },
-    input: {
-        height: 40,
-        borderColor: '#ccc',
-        borderWidth: 1,
-        borderRadius: 5,
-        paddingHorizontal: 10,
-        marginBottom: 20,
-    },
-    iconButton: {
-        backgroundColor: primaryColor,
-        padding: 10,
-        borderRadius: 5,
-        marginBottom: 20,
-    },
-    iconButtonText: {
-        fontSize: 16,
+    heading: {
+        fontSize: 20,
         fontWeight: 'bold',
-        color: '#333',
-        textAlign: 'center',
-    },
-    selectedIconText: {
-        fontSize: 16,
         marginBottom: 20,
     },
     saveButton: {
@@ -76,14 +104,41 @@ const styles = StyleSheet.create({
     saveButtonText: {
         fontSize: 16,
         fontWeight: 'bold',
-        color: '#fff',
+        color: textColor,
         textAlign: 'center',
     },
-    header: {
-        color: textColor,
+    colorPicker: {
+        marginTop: 20,
+    },
+    categorySelection: {
+        marginTop: 5,
+        marginBottom: 10,
+        width: '100%',
+        height: windowHeight / 15,
+        borderColor: '#ccc',
+        borderRadius: 3,
+        borderWidth: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        opacity: 0.7
+    },
+    categoryIcon: {
+        padding: 10,
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRightColor: '#ccc',
+        borderRightWidth: 1,
+        width: 50,
+    },
+    categoryName: {
+        padding: 10,
+        flex: 1,
         fontSize: 16,
-        fontWeight: 'bold',
-        marginTop: 10,
-        marginBottom: 20
-    }
+        fontFamily: 'Roboto',
+        color: '#333',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

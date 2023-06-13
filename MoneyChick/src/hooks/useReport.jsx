@@ -10,7 +10,7 @@ export const useReport = () => {
     const [walletAmount, setWalletAmount] = useState(0);
     const [error, setError] = useState('');
     const { user } = useAuthContext();
-
+    
     const getBudgetsSpent = async () => await get(`reports/user/${user._id}/budgets-spent`, {}, (data) => {
         console.log('Report Viewed successfully')
         setBudgetsSpent(data)

@@ -8,7 +8,6 @@ import { BudgetList } from '../components/BudgetList';
 const Tab = createMaterialTopTabNavigator();
 
 export const BudgetsView = (props) => {
-    console.log('what');
     return (
         <Tab.Navigator
         screenOptions={{

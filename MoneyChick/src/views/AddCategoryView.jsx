@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 import { primaryColor, textColor } from '../utils/globalStyle.js';
 import ColorPickerWheel from 'react-native-color-picker-wheel';
 import { useAuthContext } from '../hooks/useAuthContext.jsx';
+import { Icon } from '../components/Icon.jsx';
 
 export const AddCategoryView = ({ navigation, route }) => {
     const [name, setName] = useState('');
     const [icon, setIcon] = useState('');
-    const [type, setType] = useState('');
+    const [type, setType] = useState(''); // Set initial state for the selected category type
     const [color, setColor] = useState('');
     const { user } = useAuthContext();
     const { addCategory } = route?.params ?? {};
-    console.log(icon)
 
     const onSave = () => {
         const newCategory = {
@@ -19,7 +20,7 @@ export const AddCategoryView = ({ navigation, route }) => {
             icon,
             type,
             color,
-            userId: user?._id
+            userId: user?._id,
         };
 
         addCategory?.(newCategory, () => {
@@ -37,7 +38,7 @@ export const AddCategoryView = ({ navigation, route }) => {
     };
 
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <Text style={styles.heading}>Add Category</Text>
             <TextInput
                 value={name}
@@ -48,13 +49,24 @@ export const AddCategoryView = ({ navigation, route }) => {
             <TouchableOpacity onPress={navigateToIconSelection} style={styles.iconButton}>
                 <Text style={styles.iconButtonText}>Select Icon</Text>
             </TouchableOpacity>
-            <Text style={styles.selectedIconText}>{icon}</Text>
-            <TextInput
-                value={type}
-                onChangeText={setType}
-                placeholder="Category Type"
-                style={styles.input}
-            />
+            <View style={styles.selectedIconContainer}>
+                {icon ? (
+                    <Icon name={icon} color={primaryColor} size={24} />
+                ) : (
+                    <Text style={styles.selectedIconText}>No Icon Selected</Text>
+                )}
+            </View>
+            <View style={styles.pickerContainer}>
+                <Picker
+                    selectedValue={type}
+                    onValueChange={(itemValue) => setType(itemValue)}
+                    style={styles.picker}
+                    prompt="Select Category Type" // Set the default placeholder value
+                >
+                    <Picker.Item label="Income" value="income" />
+                    <Picker.Item label="Expense" value="expense" />
+                </Picker>
+            </View>
             <TouchableOpacity onPress={onSave} style={styles.saveButton}>
                 <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
@@ -62,7 +74,7 @@ export const AddCategoryView = ({ navigation, route }) => {
                 onColorChange={handleColorChange}
                 style={styles.colorPicker}
             />
-        </View>
+        </ScrollView>
     );
 };
 
@@ -84,7 +96,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         paddingHorizontal: 10,
         marginBottom: 20,
-        color: 'gray'
+        color: 'gray',
     },
     iconButton: {
         backgroundColor: primaryColor,
@@ -97,6 +109,19 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         color: textColor,
         textAlign: 'center',
+    },
+    selectedIconContainer: {
+        height: 40,
+        borderWidth: 1,
+        borderColor: '#ccc',
+        borderRadius: 5,
+        marginBottom: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    selectedIconText: {
+        fontSize: 16,
+        color: 'gray',
     },
     saveButton: {
         backgroundColor: primaryColor,
@@ -112,14 +137,16 @@ const styles = StyleSheet.create({
     colorPicker: {
         marginTop: 20,
     },
-    selectedIconText: {
-        height: 40,
+    pickerContainer: {
         borderColor: '#ccc',
         borderWidth: 1,
         borderRadius: 5,
-        paddingHorizontal: 10,
         marginBottom: 20,
-        color: 'gray'
-    }
+    },
+    picker: {
+        height: 40,
+        width: '100%',
+        color: 'gray',
+        textAlign: 'center', // Center align the default placeholder value
+    },
 });
-

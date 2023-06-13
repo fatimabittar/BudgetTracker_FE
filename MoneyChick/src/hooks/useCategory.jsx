@@ -28,10 +28,8 @@ export const useCategory = (type) => {
     }
 
     const editCategory = (category, onSuccess) => {
-        console.log(category);
         setCategories(categories.map((item) => {
             if (item._id == category._id) {
-                console.log(item._id)
                 return category
             }
             return item;

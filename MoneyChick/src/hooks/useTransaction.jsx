@@ -12,7 +12,6 @@ export const useTransaction = () => {
     const getTransactions = async () => await get(`transactions/user/${user._id}`, { params },
         (data) => {
             setTransactions(data)
-            console.log(params);
             console.log('Transactions Viewed successfully')
         }, (error) => setError(error));
 
@@ -25,10 +24,8 @@ export const useTransaction = () => {
     }
 
     const editTransaction = (transaction, onSuccess) => {
-        console.log(transaction);
         setTransactions(transactions.map((item) => {
             if (item.id === transaction.id) {
-                console.log(item.id)
                 return transaction
             }
             return item;
@@ -43,7 +40,6 @@ export const useTransaction = () => {
     };
 
     const addTransaction = (transaction, onSuccess) => {
-        setTransactions([...transactions, transaction])
         post('transactions', transaction, () => {
             console.log('transaction added successfully');
             onSuccess?.();

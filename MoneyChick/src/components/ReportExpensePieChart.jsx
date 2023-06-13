@@ -4,42 +4,10 @@ import { PieChart } from 'react-native-svg-charts';
 import { textColor } from '../utils/globalStyle';
 
 export const ReportExpensePieChart = ({ expensesCategories = [] }) => {
-  const getColor = () => {
-    const usedColors = new Set();
-
-    // Collect used colors
-    expensesCategories.forEach((item) => {
-      usedColors.add(item.categoryColor);
-    });
-
-    const availableColors = [
-      '#FF5733',
-      '#C70039',
-      '#900C3F',
-      '#581845',
-      '#FFC300',
-      '#FF5733',
-      '#C70039',
-      '#900C3F',
-      '#581845',
-      '#FFC300',
-    ];
-
-    // Find the first available color
-    for (let color of availableColors) {
-      if (!usedColors.has(color)) {
-        return color;
-      }
-    }
-
-    // Return a fallback color if all colors are used
-    return '#000000';
-  };
-
   const pieData = expensesCategories.map((item, index) => ({
     value: item.totalExpenses,
     svg: {
-      fill: item.categoryColor || getColor(),
+      fill: item.categoryColor,
     },
     key: item.categoryId,
     label: item.categoryName,

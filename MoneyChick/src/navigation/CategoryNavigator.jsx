@@ -21,7 +21,6 @@ export const CategoryNavigator = () => {
                 headerTintColor: textColor,
                 headerShadowVisible: false,
             }} />
-            <Stack.Screen name="Icon Selection" component={IconSelectionView} />
             <Stack.Screen name="Add Category" component={AddCategoryView} options={{
                 headerStyle: {
                     backgroundColor: '#d9f3c0',

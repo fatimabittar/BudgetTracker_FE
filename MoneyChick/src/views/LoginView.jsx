@@ -17,9 +17,6 @@ export const LoginView = ({ navigation }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState();
-    console.log(email);
-    console.log(password);
-    console.log(error);
     const { saveUser } = useAuthContext();
 
     return (

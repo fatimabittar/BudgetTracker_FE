@@ -5,10 +5,9 @@ import { Icon } from './Icon';
 import { useCategory } from '../hooks/useCategory';
 import { FloatingButton } from './FloatingButton.jsx';
 
-export const CategoriesSelection = ({ type, onCategorySelect, disbaleHasBudget }) => {
-    
-    const { categories } = useCategory(type);
+export const CategoriesSelection = ({ type, onCategorySelect, disableHasBudget, warnHasTransaction }) => {
 
+    const { categories } = useCategory(type);
 
     const handleCategoryPress = (category) => {
         onCategorySelect(category);
@@ -19,17 +18,20 @@ export const CategoriesSelection = ({ type, onCategorySelect, disbaleHasBudget }
             {categories.map((category) => (
                 <TouchableOpacity
                     key={category._id}
-                    style={[styles.categoryContainer, disbaleHasBudget && category.categoryHasBudget && styles.disabled]}
+                    style={[styles.categoryContainer, disableHasBudget && category.categoryHasBudget && styles.disabled]}
                     onPress={() => handleCategoryPress(category)}
-                    disabled={disbaleHasBudget && category.categoryHasBudget}>
+                    disabled={disableHasBudget && category.categoryHasBudget}
+                >
                     <View style={styles.iconContainer}>
                         <Icon name={category.icon} color={category.color} />
                     </View>
                     <Text style={styles.categoryText}>{category.name}</Text>
+                    {warnHasTransaction && !category.categoryHasBudget && category.categoryHasTransaction && (
+                        <Icon name='alert-outline' color='#eed202' />
+                    )}
                 </TouchableOpacity>
             ))}
         </ScrollView>
-
     );
 };
 
@@ -79,5 +81,5 @@ const styles = StyleSheet.create({
     },
     disabled: {
         opacity: 0.3,
-    }
+    },
 });

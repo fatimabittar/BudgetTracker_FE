@@ -45,6 +45,7 @@ export const TransactionsList = ({ navigation, type }) => {
   const handleTransactionPress = (transaction) => {
     navigation.navigate('Transaction Modal', { transaction, deleteTransaction, editTransaction });
   };
+  const currentDay = new Date().getDay();
 
   return (
     <View style={{ flex: 1 }}>
@@ -68,7 +69,7 @@ export const TransactionsList = ({ navigation, type }) => {
               </View>
               <Text style={styles.transactionDate}>{transaction.date}</Text>
             </View>
-            <Text style={styles.transactionAmount}>{transaction.amount}</Text>
+            <Text style={[styles.transactionAmount, { color: transaction.type === 'expense' ? 'red' : 'green' }]}>{transaction.amount}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>

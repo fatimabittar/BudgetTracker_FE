@@ -20,7 +20,6 @@ export const BudgetNavigator = () => {
             headerTintColor: textColor,
             headerShadowVisible: false,
         }} />
-        {/* <Stack.Screen name="Icon Selection" component={IconSelectionView} /> */}
         <Stack.Screen name="Add Budget" component={AddBudgetView} options={{
             headerStyle: {
                 backgroundColor: '#d9f3c0',
@@ -28,7 +27,7 @@ export const BudgetNavigator = () => {
             headerTintColor: textColor,
             headerShadowVisible: false,
         }} />
-        <Stack.Screen name="Select Category" children={(props) => <CategorySelectionView {...props} disableIncome disbaleHasBudget />} options={{
+        <Stack.Screen name="Select Category" children={(props) => <CategorySelectionView {...props} disableIncome disbaleHasBudget warnHasTransaction />} options={{
             headerStyle: {
                 backgroundColor: '#d9f3c0',
             },
@@ -37,43 +36,3 @@ export const BudgetNavigator = () => {
         }} />
     </Stack.Navigator>)
 }
-
-// return (
-//     <Stack.Navigator>
-//         <Stack.Screen name="Budget View" component={() =>
-//             <Stack.Navigator>
-//                 <Stack.Screen name="Budget List" component={BudgetsView} options={{ headerShown: false }} />
-//                 <Stack.Screen name="Budget Modal" component={BudgetModal} />
-//                 <Stack.Screen name="Edit Budget" component={EditTransactionView} options={{
-//                     headerStyle: {
-//                         backgroundColor: '#d9f3c0',
-//                     },
-//                     headerTintColor: textColor,
-//                     headerShadowVisible: false,
-//                 }} />
-//                 <Stack.Screen name="Add Budget" component={AddTransactionView} options={{
-//                     headerStyle: {
-//                         backgroundColor: '#d9f3c0',
-//                     },
-//                     headerTintColor: textColor,
-//                     headerShadowVisible: false,
-//                 }} />
-//                 <Stack.Screen name="Select Category"
-//                     // component={CategorySelectionView}
-//                     children={(props) => <CategoriesSelection {...props} type='income' onCategorySelect={(catergory) => {
-//                         onCategorySelect(catergory);
-//                         navigation.goBack()
-//                     }} />}
-//                     options={{
-//                         headerStyle: {
-//                             backgroundColor: '#d9f3c0',
-//                         },
-//                         headerTintColor: textColor,
-//                         headerShadowVisible: false,
-//                     }} />
-//             </Stack.Navigator>}
-//             options={{ headerShown: false }} />
-
-
-//     </Stack.Navigator>
-// )

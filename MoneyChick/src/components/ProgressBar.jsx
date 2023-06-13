@@ -15,7 +15,6 @@ export const ProgressBar = ({ done, total }) => {
     } else {
         progressColor = primaryColor;
     }
-console.log('why');
     return (
         <View style={styles.progressContainer}>
             <View style={styles.progressBar}>

@@ -26,7 +26,6 @@ export const Routes = () => {
     });
     checkUserLoggedIn()
   }, []);
-  console.log(launching);
   return (
     <NavigationContainer>
       {launching ? <LaunchNavigator /> : user?.token ? <AppNavigator /> : <AuthNavigator />}

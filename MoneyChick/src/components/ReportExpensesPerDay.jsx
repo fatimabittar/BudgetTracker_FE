@@ -8,7 +8,6 @@ export const ReportExpensesPerDay = ({ expensesPerDay = [] }) => {
   const barChartData = expensesPerDay.map((expense) => ({
     value: expense.totalExpenses,
   }));
-  console.log(expensesPerDay);
 
   return (
     <View style={styles.container}>
@@ -77,7 +76,7 @@ const styles = StyleSheet.create({
   budgetQuantityText: {
     fontSize: 10,
     fontWeight: 'bold',
-    marginTop:20,
+    marginTop: 20,
     color: textColor,
   },
 });

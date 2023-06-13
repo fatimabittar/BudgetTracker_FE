@@ -19,7 +19,6 @@ export const AddTransactionView = ({ navigation, route }) => {
         const numericValue = value.replace(/[^0-9.]/g, '');
         setAmount(numericValue);
     };
-    console.log(date.toLocaleDateString());
 
     const onSave = () => {
         const newTransaction = {
@@ -28,9 +27,8 @@ export const AddTransactionView = ({ navigation, route }) => {
             categoryId: category?._id,
             amount,
             // date: new Date(date.getFullYear(), date.getMonth(), date.getDate()).toISOString(),
-            date: date.getUTCDate()
+            date: date.toDateString()
         };
-        console.log(newTransaction);
         addTransaction?.(newTransaction, () => {
             console.log('Transaction added successfully');
             navigation.goBack();
@@ -40,7 +38,6 @@ export const AddTransactionView = ({ navigation, route }) => {
     const onCategorySelect = () => {
         navigation.navigate('Select Category', { onCategorySelect: setCategory })
     }
-
 
     return (
         <View style={styles.container}>

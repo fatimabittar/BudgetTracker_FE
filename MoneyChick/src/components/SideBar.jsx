@@ -88,10 +88,11 @@ const styles = StyleSheet.create({
     },
     logo: {
         resizeMode: 'center',
-        marginTop:50,
-        width: 200,
-        height: 200,
+        marginTop: 50,
+        width: 180,
+        height: 180,
         alignSelf: 'center',
+        zIndex: -1
     },
     drawerContent: {
         flex: 1,
@@ -105,7 +106,7 @@ const styles = StyleSheet.create({
 
     },
     drawerSection: {
-        marginTop: -60,
+        marginTop: -50,
     },
     bottomDrawerSection: {
         marginBottom: 15,

@@ -16,6 +16,7 @@ export const TransactionNavigator = () => {
         <Stack.Navigator>
             <Stack.Screen name="Transaction View" component={TransactionsView} options={{ headerShown: false }} />
             <Stack.Screen name="Transaction Modal" component={TransactionModal} options={{
+                title: ' View Transaction',
                 headerStyle: {
                     backgroundColor: '#d9f3c0',
                 },

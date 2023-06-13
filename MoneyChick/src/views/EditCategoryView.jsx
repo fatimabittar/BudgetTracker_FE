@@ -8,8 +8,8 @@ export const EditCategoryView = ({ navigation, route }) => {
     const { category, editCategory } = route.params;
     const [name, setName] = useState(category.name);
     const [icon, setIcon] = useState(category.icon);
-    const [color, setColor] = useState(category.color);
-
+    const [color, setColor] = useState(category.color || primaryColor);
+    const [type, setType] = useState(category.type);
 
     const onSelectIcon = (selectedIcon) => {
         setIcon(selectedIcon);
@@ -26,20 +26,28 @@ export const EditCategoryView = ({ navigation, route }) => {
                 style={styles.input}
             />
             <View style={styles.iconCat}>
-                <Icon name={category.icon} color={category.color} />
-                <TouchableOpacity onPress={() => navigation.navigate('Icon Selection', { onSelectIcon })} style={styles.iconButton}>
+                <Icon name={icon} color={color} />
+                <TouchableOpacity
+                    onPress={() => navigation.navigate('Select Icon', { icon, setIcon })}
+                    style={styles.iconButton}
+                >
                     <Text style={styles.iconButtonText}>Choose Icon</Text>
                 </TouchableOpacity>
-
             </View>
             <ColorPickerWheel
                 onColorChange={handleColorChange}
                 style={styles.colorPicker}
+                color={color}
             />
-            <TouchableOpacity onPress={() => editCategory({ ...category, name, icon, color }, () => navigation.goBack())} style={styles.saveButton}>
+            <TouchableOpacity
+                onPress={() =>
+                    editCategory({ ...category, name, icon, color, type }, () => navigation.goBack())
+                }
+                style={styles.saveButton}
+            >
                 <Text style={styles.saveButtonText}>Save</Text>
             </TouchableOpacity>
-        </ScrollView >
+        </ScrollView>
     );
 };
 
@@ -86,11 +94,25 @@ const styles = StyleSheet.create({
     },
     colorPicker: {
         marginTop: 20,
-        marginBottom: 30
+        marginBottom: 30,
     },
     iconCat: {
         display: 'flex',
         flexDirection: 'row',
-        justifyContent: 'space-between'
-    }
+        justifyContent: 'space-between',
+    },
+    pickerContainer: {
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        textAlign: 'center',
+        marginBottom: 20,
+    },
+    picker: {
+        height: 40,
+        alignContent: 'center',
+        width: '100%',
+        color: 'gray',
+        textAlign: 'center',
+    },
 });

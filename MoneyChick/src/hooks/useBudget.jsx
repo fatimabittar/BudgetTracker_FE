@@ -24,7 +24,6 @@ export const useBudget = () => {
     }
 
     const editBudget = (budget, onSuccess) => {
-        console.log(budget);
         setBudgets(budgets.map((item) => {
             if (item.id === budget.id) {
                 return budget

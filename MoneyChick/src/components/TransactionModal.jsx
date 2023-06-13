@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Icon } from './Icon.jsx';
 import { primaryColor, textColor } from '../utils/globalStyle.js';
 import { useTransaction } from '../hooks/useTransaction.jsx';
+import { windowWidth } from '../utils/dimensions.js';
 
 export const TransactionModal = ({ navigation, route }) => {
     const { transaction, deleteTransaction, editTransaction } = route.params;
@@ -18,32 +19,32 @@ export const TransactionModal = ({ navigation, route }) => {
 
     return (
         <View style={styles.container}>
-            <View style={styles.transaction}>
-                <TouchableOpacity onPress={navigateBack}>
-                    <Icon name="arrow-left-thick" color={textColor} />
+            <View style={styles.iconContainer}>
+                <TouchableOpacity onPress={() => {
+                    deleteTransaction(transaction.id)
+                    navigateBack()
+                }} style={styles.iconButton}>
+                    <Icon name="delete-outline" color={primaryColor} size={24} />
                 </TouchableOpacity>
-                <View style={styles.iconContainer}>
-                    <TouchableOpacity onPress={() => {
-                        deleteTransaction(transaction.id)
-                        navigateBack()
-                    }} style={styles.iconButton}>
-                        <Icon name="delete-outline" color={primaryColor} size={24} />
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={onEditTransaction} style={styles.iconButton}>
-                        <Icon name="pencil-outline" color={primaryColor} size={24} />
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={onEditTransaction} style={styles.iconButton}>
+                    <Icon name="pencil-outline" color={primaryColor} size={24} />
+                </TouchableOpacity>
             </View>
             <View style={styles.transaction}>
                 <View style={styles.transactionDetails}>
                     <View style={styles.transactionIcon}>
-                        <Icon name={transaction.icon} color={transaction.color} size={64} />
+                        <Icon name={transaction.icon} color={transaction.color} size={35} />
+                        <Text style={styles.transactionText}>{transaction.categoryName}</Text>
                     </View>
-                    <Text style={styles.transactionText}>{transaction.categoryName}</Text>
-                    <Text style={styles.transactionText}>{transaction.date}</Text>
-                    <Text style={styles.transactionDescription}>{transaction.description}</Text>
+                    <View style={styles.transactionAmountDate}>
+                        <Text style={styles.transactionText}>{transaction.date}</Text>
+                        <Text style={[styles.transactionAmount, { color: transaction.type === 'expense' ? 'red' : 'green' }]}>{transaction.amount}</Text>
+                    </View>
+                    {transaction.description && <View style={styles.transactionIcon}>
+                        <Icon name="note" color={primaryColor} size={24} />
+                        <Text style={styles.transactionText}>{transaction.description}</Text>
+                    </View>}
                 </View>
-                <Text style={styles.transactionAmount}>{transaction.amount}</Text>
             </View>
         </View>
     );
@@ -58,8 +59,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        height: 200,
-
     },
     iconContainer: {
         flexDirection: 'row',
@@ -70,29 +69,35 @@ const styles = StyleSheet.create({
     },
     transaction: {
         flexDirection: 'row',
+        width: '100%',
         justifyContent: 'space-between',
         marginBottom: 20,
     },
     transactionDetails: {
         marginRight: 20,
+        width: '100%'
     },
     transactionText: {
-        fontSize: 16,
-        marginBottom: 8,
+        fontSize: 20,
         color: '#333333',
     },
     transactionAmount: {
         fontSize: 24,
         fontWeight: 'bold',
         color: textColor,
-        alignSelf: 'flex-end',
     },
     transactionIcon: {
-        marginBottom: 10,
+        marginBottom: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 16,
+        alignItems: 'center',
     },
-    transactionDescription: {
-        fontSize: 16,
-        color: textColor,
-        textAlign: 'center',
-    },
+    transactionAmountDate: {
+        marginBottom: 20,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        width: '100%',
+    }
 });
